@@ -1,19 +1,19 @@
-(function () {
+const game = (function () {
   const gameBoard = {
-    gameBoard: ["","","","","","","","",""],
-  };
+    board: ['', '', '', '', '', '', '', '', '',]
+  }
 
   const Players = function (name, marker, winState=false) {
     return {name, marker, winState};
   };
 
   const render = () => {
-    const board = this.gameBoard;
-    const gameContainer = document.querySelector('.game-container');
+    const board = gameBoard.board;
+    const boardContainer = document.querySelector('.board-container');
 
     board.forEach(element => {
       const square = document.createElement('div');
-      gameContainer.appendChild(square);
+      boardContainer.appendChild(square);
     });
   };
 
@@ -31,5 +31,8 @@
     }
   };
 
+  return {render};
 
 })();
+
+game.render();
