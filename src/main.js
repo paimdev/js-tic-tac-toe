@@ -8,6 +8,7 @@ const game = (function () {
   };
 
   const render = function () {
+    clearBoard();
     const board = gameBoard.board;
     const boardContainer = document.querySelector(".board-container");
     let index = 0;
@@ -21,6 +22,14 @@ const game = (function () {
       index++;
     }
   };
+
+  const clearBoard = function () {
+    const areas = document.querySelectorAll(".marker-area");
+
+    for (const area of areas) {
+      area.remove();
+    }
+  }
 
   const listeners = function () {
     const squares = document.querySelectorAll(".marker-area");
