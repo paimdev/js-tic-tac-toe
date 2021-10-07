@@ -118,7 +118,12 @@ const game = (function () {
     }
   };
 
-  const gameWin = function () {};
+  const gameWin = function () {
+    const positions = winningPositions;
+    if (positions.horizontal || positions.vertical || positions.diagonal) {
+      return true;
+    }
+  };
 
   const gameplay = (function () {
     render();
