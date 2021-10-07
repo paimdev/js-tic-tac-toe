@@ -49,7 +49,12 @@ const game = (function () {
 
   const placeMark = function (marker, index) {
     let board = gameBoard.board;
-    board[index] = marker;
+
+    if (board[index] === "") {
+      board[index] = marker;
+    } else {
+      invalidPlay();
+    };
   };
 
   const nextPlayer = function () {
@@ -60,12 +65,9 @@ const game = (function () {
     }
   };
 
-  const gameplay = function () {
+  const gameplay = (function () {
       render();
-      listeners();
-  };
+  })();
 
   return { render, listeners, gameplay };
 })();
-
-game.render();
