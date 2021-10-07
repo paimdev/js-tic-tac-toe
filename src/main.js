@@ -3,6 +3,8 @@ const game = (function () {
     board: ["", "", "", "", "", "", "", "", ""],
   };
 
+
+
   const Players = function (name, marker, winState = false) {
     return { name, marker, winState };
   };
@@ -37,7 +39,8 @@ const game = (function () {
     for (const square of squares) {
       const id = square.getAttribute("id");
       square.addEventListener('click', () => {
-        placeMark(gameplay.currentMarker, id);
+        placeMark("X", id);
+        render();
       });
     }
   }
