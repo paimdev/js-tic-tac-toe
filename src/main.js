@@ -3,7 +3,7 @@ const game = (function () {
     board: ["", "", "", "", "", "", "", "", ""],
   };
 
-
+  currentMarker = "X";
 
   const Players = function (name, marker, winState = false) {
     return { name, marker, winState };
@@ -23,6 +23,7 @@ const game = (function () {
       boardContainer.appendChild(square);
       index++;
     }
+    listeners();
   };
 
   const clearBoard = function () {
@@ -39,8 +40,9 @@ const game = (function () {
     for (const square of squares) {
       const id = square.getAttribute("id");
       square.addEventListener('click', () => {
-        placeMark("X", id);
+        placeMark(currentMarker, id);
         render();
+        nextPlayer();
       });
     }
   }
@@ -50,12 +52,20 @@ const game = (function () {
     board[index] = marker;
   };
 
-  const gameplay = function () {
-    render();
-    listeners();
+  const nextPlayer = function () {
+    if (currentMarker === "X") {
+      currentMarker = "O";
+    } else {
+      currentMarker = "X";
+    }
   };
 
-  return { gameplay };
+  const gameplay = function () {
+      render();
+      listeners();
+  };
+
+  return { render, listeners, gameplay };
 })();
 
-game.gameplay();
+game.render();
