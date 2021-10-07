@@ -5,6 +5,19 @@ const game = (function () {
 
   currentMarker = "X";
 
+  const winningPositions = function () {
+    const horizontal = function () {
+
+    }
+    const vertical = function () {
+
+    }
+
+    const diagonal = function () {
+
+    }
+  };
+
   const Players = function (name, marker, winState = false) {
     return { name, marker, winState };
   };
@@ -63,6 +76,10 @@ const game = (function () {
     } else {
       currentMarker = "X";
     }
+  };
+
+  const gameWin = function () {
+    
   };
 
   const gameplay = (function () {
