@@ -22,6 +22,15 @@ const game = (function () {
     }
   };
 
+  const listener = function () {
+    const squares = document.querySelectorAll(".marker-area");
+    
+    for (const square of squares) {
+      const id = square.getAttribute("id");
+      square.addEventListener("click", placeMark(gameplay.currentMarker, id));
+    }
+  }
+
   const placeMark = function (marker, index) {};
 
   const gameplay = function () {};
