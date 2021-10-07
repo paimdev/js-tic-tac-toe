@@ -31,7 +31,10 @@ const game = (function () {
     }
   }
 
-  const placeMark = function (marker, index) {};
+  const placeMark = function (marker, index) {
+    let board = gameBoard.board;
+    board[index] = marker;
+  };
 
   const gameplay = function () {};
 
