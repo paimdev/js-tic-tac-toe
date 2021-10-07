@@ -1,6 +1,6 @@
 const game = (function () {
   const gameBoard = {
-    board: ['', '', '', '', '', '', '', '', '',]
+    board: ['X', 'X', 'O', 'X', 'O', 'X', 'X', 'O', 'O',]
   }
 
   const Players = function (name, marker, winState=false) {
@@ -13,11 +13,13 @@ const game = (function () {
 
     board.forEach(element => {
       const square = document.createElement('div');
+      square.classList.add('square-marker');
+      square.innerText = element;
       boardContainer.appendChild(square);
     });
   };
 
-  const gameplay = function() {
+  const gameplay = ()  => {
     const player1 = Players("Josh", "X");
     const player2 = Players("Joran", "O");
 
