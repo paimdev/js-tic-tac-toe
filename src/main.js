@@ -36,7 +36,9 @@ const game = (function () {
     
     for (const square of squares) {
       const id = square.getAttribute("id");
-      square.addEventListener("click", placeMark(gameplay.currentMarker, id));
+      square.addEventListener('click', () => {
+        placeMark(gameplay.currentMarker, id);
+      });
     }
   }
 
