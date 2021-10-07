@@ -45,9 +45,12 @@ const game = (function () {
     board[index] = marker;
   };
 
-  const gameplay = function () {};
+  const gameplay = function () {
+    render();
+    listeners();
+  };
 
-  return { render };
+  return { gameplay };
 })();
 
-game.render();
+game.gameplay();
