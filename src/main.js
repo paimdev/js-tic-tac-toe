@@ -22,7 +22,7 @@ const game = (function () {
     }
   };
 
-  const listener = function () {
+  const listeners = function () {
     const squares = document.querySelectorAll(".marker-area");
     
     for (const square of squares) {
