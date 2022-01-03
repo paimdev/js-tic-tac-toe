@@ -1,8 +1,6 @@
 const gameBoard = (() => {
-  const gameBoard = {
-    gameBoard: []
-  }
-  
+  const gameBoardArr = [];
+
   return {gameBoard};
 })
 
