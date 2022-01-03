@@ -1,7 +1,7 @@
 const gameBoard = (() => {
   const gameBoardArr = [];
 
-  return {gameBoard};
+  return {gameBoardArr};
 })
 
 const Player = function(marker) {
