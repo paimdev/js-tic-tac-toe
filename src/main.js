@@ -10,4 +10,6 @@ const Player = function(marker) {
   return {marker};
 }
 
+const gamePlay = (() => {
 
+})
