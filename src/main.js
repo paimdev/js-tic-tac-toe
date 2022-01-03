@@ -13,7 +13,7 @@ const Player = function(marker) {
 const displayController = (() => {
   const gameContainer = document.querySelector(".board-container");
 
-  displayUpdater = () => {
+  updateBoard = () => {
     for (item in gameBoard.gameBoardArr) {
       const markerHolder = document.createElement("div");
       markerHolder.className = "marker-area";
@@ -23,10 +23,10 @@ const displayController = (() => {
     }
   }
 
-  return {displayUpdater};
+  return {updateBoard};
 })();
 
 const gamePlay = (() => {
-  displayController.displayUpdater();
+  displayController.updateBoard();
   
 })();
