@@ -13,20 +13,45 @@ const Player = function(marker) {
 const displayController = (() => {
   const gameContainer = document.querySelector(".board-container");
 
-  updateBoard = () => {
-    for (item in gameBoard.gameBoardArr) {
+  updateArray = () => {
+    console.log("hey!")
+  }
+
+  renderBoard = () => {
+    gameContainer.innerHTML = "";
+    
+    for (let item in gameBoard.gameBoardArr) {
       const markerHolder = document.createElement("div");
       markerHolder.className = "marker-area";
+      markerHolder.id = item;
       markerHolder.innerText = gameBoard.gameBoardArr[item];
 
       gameContainer.appendChild(markerHolder);
     }
+    addListeners();
   }
 
-  return {updateBoard};
+  addListeners = () => {
+    const markerHolderList = document.querySelectorAll(".marker-area");
+    
+    for (let holder of markerHolderList) {
+      let id = holder.id;
+
+      holder.addEventListener("click", () => {
+        gameBoard.gameBoardArr[Number(id)] = currentMarker;
+        renderBoard();
+      });
+    }
+  }
+
+  return {renderBoard, addListeners};
 })();
 
 const gamePlay = (() => {
-  displayController.updateBoard();
-  
+  const player1 = Player("X");
+  const player2 = Player("O");
+  currentMarker = player1.marker;
+
+  displayController.renderBoard();
+  displayController.addListeners();
 })();
