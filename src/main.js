@@ -1,12 +1,12 @@
 const gameBoard = (() => {
-  const gameBoardArr = ["", "", "", "", "", "", "", "", ""];
-  return {gameBoardArr};
+  let gameBoardArr = ["", "", "", "", "", "", "", "", ""];
+  return { gameBoardArr };
 })();
 
 const gameRules = (() => {
 
   checkWin = () => {
-    if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[1] === currentMarker && gameBoard.gameBoardArr[2] === currentMarker){
+    if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[1] === currentMarker && gameBoard.gameBoardArr[2] === currentMarker) {
       return true;
     } else if (gameBoard.gameBoardArr[3] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[5] === currentMarker) {
       return true;
@@ -31,16 +31,15 @@ const gameRules = (() => {
 
   checkFinish = () => {
     if (checkWin() === true || checkTie() === true) {
-      console.log("Finish");
-      displayController.removeListeners();
+      displayController.finishGame();
     }
   }
-  return {checkWin, checkTie, checkFinish};
+  return { checkWin, checkTie, checkFinish };
 
 })();
 
-const Player = function(marker) {
-  return {marker};
+const Player = function (marker) {
+  return { marker };
 }
 
 const displayController = (() => {
@@ -61,16 +60,17 @@ const displayController = (() => {
   clickEvents = id => {
     if (gameBoard.gameBoardArr[Number(id)] === "") {
       updateArray(id);
-          renderBoard();
-          gameRules.checkFinish();
-          changeMarker();
-          console.log(gameBoard.gameBoardArr);
+      renderBoard();
+      gameRules.checkFinish();
+      changeMarker();
+      console.log(gameBoard.gameBoardArr);
     }
   }
 
   renderBoard = () => {
+    console.log("render");
     gameContainer.innerHTML = "";
-    
+
     for (let item in gameBoard.gameBoardArr) {
       const markerHolder = document.createElement("div");
       markerHolder.className = "marker-area";
@@ -84,7 +84,7 @@ const displayController = (() => {
 
   addListeners = () => {
     const markerHolderList = document.querySelectorAll(".marker-area");
-    
+
     for (let holder of markerHolderList) {
       let id = holder.id;
 
@@ -96,17 +96,35 @@ const displayController = (() => {
 
   removeListeners = () => {
     const markerHolderList = document.querySelectorAll(".marker-area");
-    
-    for (let holder of markerHolderList) {
-      let id = holder.id;
 
-      holder.removeEventListener("click", (e) => {
-        clickEvents(id);
-      });
+    for (let holder of markerHolderList) {
+      const newHolder = holder.cloneNode(true);
+      holder.parentNode.replaceChild(newHolder, holder);
+      console.log("Removed all listners");
     }
   }
 
-  return {renderBoard, removeListeners};
+  finishGame = () => {
+    console.log("Finish");
+    removeListeners();
+
+    const winTieContainer = document.querySelector(".win-tie-container");
+    const winTieText = document.createElement('p');
+    winTieText.innerText = `The Winner is ${currentMarker}`;
+    winTieContainer.appendChild(winTieText);
+
+    const restartButton = document.createElement('button');
+    restartButton.innerText = "Restart Game";
+    restartButton.addEventListener('click', () => {
+      gameBoard.gameBoardArr = ["", "", "", "", "", "", "", "", ""];
+      renderBoard();
+      winTieContainer.removeChild(winTieText);
+      winTieContainer.removeChild(restartButton);
+    });
+    winTieContainer.appendChild(restartButton);
+  };
+
+  return { renderBoard, finishGame };
 })();
 
 const player1 = Player("X");
