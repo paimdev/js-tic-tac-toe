@@ -1,15 +1,42 @@
 const gameBoard = (() => {
   const gameBoardArr = ["", "", "", "", "", "", "", "", ""];
+  return {gameBoardArr};
+})();
+
+const gameRules = (() => {
 
   checkWin = () => {
-    null
+    if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[1] === currentMarker && gameBoard.gameBoardArr[2] === currentMarker){
+      return true;
+    } else if (gameBoard.gameBoardArr[3] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[5] === currentMarker) {
+      return true;
+    } else if (gameBoard.gameBoardArr[6] === currentMarker && gameBoard.gameBoardArr[7] === currentMarker && gameBoard.gameBoardArr[8] === currentMarker) {
+      return true;
+    } else if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[3] === currentMarker && gameBoard.gameBoardArr[6] === currentMarker) {
+      return true;
+    } else if (gameBoard.gameBoardArr[1] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[7] === currentMarker) {
+      return true;
+    } else if (gameBoard.gameBoardArr[2] === currentMarker && gameBoard.gameBoardArr[5] === currentMarker && gameBoard.gameBoardArr[8] === currentMarker) {
+      return true;
+    } else if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[8] === currentMarker) {
+      return true;
+    } else if (gameBoard.gameBoardArr[2] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[6] === currentMarker) {
+      return true;
+    }
   }
 
   checkTie = () => {
-    return !gameBoardArr.includes("");
+    return !gameBoard.gameBoardArr.includes("");
   }
 
-  return {gameBoardArr, checkWin, checkTie};
+  checkFinish = () => {
+    if (checkWin() === true || checkTie() === true) {
+      console.log("Finish");
+      displayController.removeListeners();
+    }
+  }
+  return {checkWin, checkTie, checkFinish};
+
 })();
 
 const Player = function(marker) {
@@ -24,17 +51,20 @@ const displayController = (() => {
   }
 
   changeMarker = () => {
-    if (currentMarker === "X") {
-      currentMarker = "O";
+    if (currentMarker === player1.marker) {
+      currentMarker = player2.marker;
     } else {
-      currentMarker = "X";
-    }   
+      currentMarker = player1.marker;
+    }
   }
 
-  checkFinish = () => {
-    console.log(gameBoard.checkTie());
-    if (gameBoard.checkWin() === true || gameBoard.checkTie() === true) {
-      console.log("Finish");
+  clickEvents = id => {
+    if (gameBoard.gameBoardArr[Number(id)] === "") {
+      updateArray(id);
+          renderBoard();
+          gameRules.checkFinish();
+          changeMarker();
+          console.log(gameBoard.gameBoardArr);
     }
   }
 
@@ -59,16 +89,24 @@ const displayController = (() => {
       let id = holder.id;
 
       holder.addEventListener("click", (e) => {
-        updateArray(id);
-        renderBoard();
-        changeMarker();
-        console.log(gameBoard.gameBoardArr);
-        checkFinish();
+        clickEvents(id);
       });
     }
   }
 
-  return {renderBoard, addListeners};
+  removeListeners = () => {
+    const markerHolderList = document.querySelectorAll(".marker-area");
+    
+    for (let holder of markerHolderList) {
+      let id = holder.id;
+
+      holder.removeEventListener("click", (e) => {
+        clickEvents(id);
+      });
+    }
+  }
+
+  return {renderBoard, removeListeners};
 })();
 
 const player1 = Player("X");
