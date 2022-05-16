@@ -100,7 +100,7 @@ const displayController = (() => {
     for (let holder of markerHolderList) {
       const newHolder = holder.cloneNode(true);
       holder.parentNode.replaceChild(newHolder, holder);
-      // console.log("Removed all listners");
+      // console.log("Removed all listeners");
     }
   }
 
