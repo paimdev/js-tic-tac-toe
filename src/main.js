@@ -13,15 +13,13 @@ const gameBoard = (() => {
 })();
 
 const Player = function(marker) {
-  this.marker = marker;
-
   return {marker};
 }
 
 const displayController = (() => {
   const gameContainer = document.querySelector(".board-container");
 
-  updateArray = (id) => {
+  updateArray = id => {
     gameBoard.gameBoardArr[Number(id)] = currentMarker;
   }
 
