@@ -63,12 +63,12 @@ const displayController = (() => {
       renderBoard();
       gameRules.checkFinish();
       changeMarker();
-      console.log(gameBoard.gameBoardArr);
+      // console.log(gameBoard.gameBoardArr);
     }
   }
 
   renderBoard = () => {
-    console.log("render");
+    // console.log("render");
     gameContainer.innerHTML = "";
 
     for (let item in gameBoard.gameBoardArr) {
@@ -100,12 +100,12 @@ const displayController = (() => {
     for (let holder of markerHolderList) {
       const newHolder = holder.cloneNode(true);
       holder.parentNode.replaceChild(newHolder, holder);
-      console.log("Removed all listners");
+      // console.log("Removed all listners");
     }
   }
 
   finishGame = () => {
-    console.log("Finish");
+    // console.log("Finish");
     removeListeners();
 
     const winTieContainer = document.querySelector(".win-tie-container");
