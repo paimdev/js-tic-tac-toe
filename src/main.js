@@ -1,7 +1,15 @@
 const gameBoard = (() => {
   const gameBoardArr = ["", "", "", "", "", "", "", "", ""];
 
-  return {gameBoardArr};
+  checkWin = () => {
+    null
+  }
+
+  checkTie = () => {
+    return !gameBoardArr.includes("");
+  }
+
+  return {gameBoardArr, checkWin, checkTie};
 })();
 
 const Player = function(marker) {
@@ -13,8 +21,23 @@ const Player = function(marker) {
 const displayController = (() => {
   const gameContainer = document.querySelector(".board-container");
 
-  updateArray = () => {
-    console.log("hey!")
+  updateArray = (id) => {
+    gameBoard.gameBoardArr[Number(id)] = currentMarker;
+  }
+
+  changeMarker = () => {
+    if (currentMarker === "X") {
+      currentMarker = "O";
+    } else {
+      currentMarker = "X";
+    }   
+  }
+
+  checkFinish = () => {
+    console.log(gameBoard.checkTie());
+    if (gameBoard.checkWin() === true || gameBoard.checkTie() === true) {
+      console.log("Finish");
+    }
   }
 
   renderBoard = () => {
@@ -37,9 +60,12 @@ const displayController = (() => {
     for (let holder of markerHolderList) {
       let id = holder.id;
 
-      holder.addEventListener("click", () => {
-        gameBoard.gameBoardArr[Number(id)] = currentMarker;
+      holder.addEventListener("click", (e) => {
+        updateArray(id);
         renderBoard();
+        changeMarker();
+        console.log(gameBoard.gameBoardArr);
+        checkFinish();
       });
     }
   }
@@ -47,11 +73,8 @@ const displayController = (() => {
   return {renderBoard, addListeners};
 })();
 
-const gamePlay = (() => {
-  const player1 = Player("X");
-  const player2 = Player("O");
-  currentMarker = player1.marker;
+const player1 = Player("X");
+const player2 = Player("O");
+currentMarker = player1.marker;
 
-  displayController.renderBoard();
-  displayController.addListeners();
-})();
+displayController.renderBoard();
