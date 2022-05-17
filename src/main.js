@@ -1,122 +1,87 @@
 const gameBoard = (() => {
-  let gameBoardArr = ["", "", "", "", "", "", "", "", ""];
+  const gameBoardArr = ['', '', '', '', '', '', '', '', ''];
   return { gameBoardArr };
 })();
 
-const gameRules = (() => {
-
-  checkWin = () => {
-    if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[1] === currentMarker && gameBoard.gameBoardArr[2] === currentMarker) {
-      return true;
-    } else if (gameBoard.gameBoardArr[3] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[5] === currentMarker) {
-      return true;
-    } else if (gameBoard.gameBoardArr[6] === currentMarker && gameBoard.gameBoardArr[7] === currentMarker && gameBoard.gameBoardArr[8] === currentMarker) {
-      return true;
-    } else if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[3] === currentMarker && gameBoard.gameBoardArr[6] === currentMarker) {
-      return true;
-    } else if (gameBoard.gameBoardArr[1] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[7] === currentMarker) {
-      return true;
-    } else if (gameBoard.gameBoardArr[2] === currentMarker && gameBoard.gameBoardArr[5] === currentMarker && gameBoard.gameBoardArr[8] === currentMarker) {
-      return true;
-    } else if (gameBoard.gameBoardArr[0] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[8] === currentMarker) {
-      return true;
-    } else if (gameBoard.gameBoardArr[2] === currentMarker && gameBoard.gameBoardArr[4] === currentMarker && gameBoard.gameBoardArr[6] === currentMarker) {
-      return true;
-    }
-  }
-
-  checkTie = () => {
-    return !gameBoard.gameBoardArr.includes("");
-  }
-
-  checkFinish = () => {
-    if (checkWin() === true || checkTie() === true) {
-      displayController.finishGame();
-    }
-  }
-  return { checkWin, checkTie, checkFinish };
-
-})();
-
-const Player = function (marker) {
+function Player(marker) {
   return { marker };
 }
 
+const player1 = Player('X');
+const player2 = Player('O');
+let currentMarker = player1.marker;
+
 const displayController = (() => {
-  const gameContainer = document.querySelector(".board-container");
+  const gameContainer = document.querySelector('.board-container');
 
-  updateArray = id => {
+  const updateArray = (id) => {
     gameBoard.gameBoardArr[Number(id)] = currentMarker;
-  }
+  };
 
-  changeMarker = () => {
+  const changeMarker = () => {
     if (currentMarker === player1.marker) {
       currentMarker = player2.marker;
     } else {
       currentMarker = player1.marker;
     }
-  }
+  };
 
-  clickEvents = id => {
-    if (gameBoard.gameBoardArr[Number(id)] === "") {
-      updateArray(id);
-      renderBoard();
-      gameRules.checkFinish();
-      changeMarker();
-      // console.log(gameBoard.gameBoardArr);
-    }
-  }
+  const addListeners = () => {
+    const markerHolderList = document.querySelectorAll('.marker-area');
 
-  renderBoard = () => {
+    markerHolderList.forEach((element) => {
+      const { id } = element;
+
+      element.addEventListener('click', () => {
+        updateArray(id);
+        renderBoard();
+        gameRules.checkFinish();
+        changeMarker();
+      });
+    });
+  };
+
+  const renderBoard = () => {
     // console.log("render");
-    gameContainer.innerHTML = "";
+    gameContainer.innerHTML = '';
+    const iterateArray = Object.values(gameBoard.gameBoardArr);
 
-    for (let item in gameBoard.gameBoardArr) {
-      const markerHolder = document.createElement("div");
-      markerHolder.className = "marker-area";
-      markerHolder.id = item;
-      markerHolder.innerText = gameBoard.gameBoardArr[item];
+    iterateArray.forEach((element, index) => {
+      const markerHolder = document.createElement('div');
+      markerHolder.className = 'marker-area';
+      markerHolder.id = index;
+      markerHolder.innerText = gameBoard.gameBoardArr[index];
 
       gameContainer.appendChild(markerHolder);
-    }
+    });
+
     addListeners();
-  }
+  };
 
-  addListeners = () => {
-    const markerHolderList = document.querySelectorAll(".marker-area");
+  const removeListeners = () => {
+    const markerHolderList = document.querySelectorAll('.marker-area');
 
-    for (let holder of markerHolderList) {
-      let id = holder.id;
-
-      holder.addEventListener("click", (e) => {
-        clickEvents(id);
+    markerHolderList.forEach((element) => {
+      element.addEventListener('click', () => {
+        const newHolder = element.cloneNode(true);
+        element.parentNode.replaceChild(newHolder, element);
       });
-    }
-  }
+    });
+  };
 
-  removeListeners = () => {
-    const markerHolderList = document.querySelectorAll(".marker-area");
-
-    for (let holder of markerHolderList) {
-      const newHolder = holder.cloneNode(true);
-      holder.parentNode.replaceChild(newHolder, holder);
-      // console.log("Removed all listeners");
-    }
-  }
-
-  finishGame = () => {
+  const finishGame = () => {
     // console.log("Finish");
     removeListeners();
 
-    const winTieContainer = document.querySelector(".win-tie-container");
+    const winTieContainer = document.querySelector('.win-tie-container');
     const winTieText = document.createElement('p');
     winTieText.innerText = `The Winner is ${currentMarker}`;
     winTieContainer.appendChild(winTieText);
 
     const restartButton = document.createElement('button');
-    restartButton.innerText = "Restart Game";
+    restartButton.innerText = 'Restart Game';
     restartButton.addEventListener('click', () => {
-      gameBoard.gameBoardArr = ["", "", "", "", "", "", "", "", ""];
+      gameBoard.gameBoardArr = ['', '', '', '', '', '', '', '', ''];
       renderBoard();
       winTieContainer.removeChild(winTieText);
       winTieContainer.removeChild(restartButton);
@@ -127,8 +92,75 @@ const displayController = (() => {
   return { renderBoard, finishGame };
 })();
 
-const player1 = Player("X");
-const player2 = Player("O");
-currentMarker = player1.marker;
+const gameRules = (() => {
+  function checkWin() {
+    if (
+      gameBoard.gameBoardArr[0] === currentMarker
+      && gameBoard.gameBoardArr[1] === currentMarker
+      && gameBoard.gameBoardArr[2] === currentMarker
+    ) {
+      return true;
+    }
+    if (
+      gameBoard.gameBoardArr[3] === currentMarker
+      && gameBoard.gameBoardArr[4] === currentMarker
+      && gameBoard.gameBoardArr[5] === currentMarker
+    ) {
+      return true;
+    }
+    if (
+      gameBoard.gameBoardArr[6] === currentMarker
+      && gameBoard.gameBoardArr[7] === currentMarker
+      && gameBoard.gameBoardArr[8] === currentMarker
+    ) {
+      return true;
+    }
+    if (
+      gameBoard.gameBoardArr[0] === currentMarker
+      && gameBoard.gameBoardArr[3] === currentMarker
+      && gameBoard.gameBoardArr[6] === currentMarker
+    ) {
+      return true;
+    }
+    if (
+      gameBoard.gameBoardArr[1] === currentMarker
+      && gameBoard.gameBoardArr[4] === currentMarker
+      && gameBoard.gameBoardArr[7] === currentMarker
+    ) {
+      return true;
+    }
+    if (
+      gameBoard.gameBoardArr[2] === currentMarker
+      && gameBoard.gameBoardArr[5] === currentMarker
+      && gameBoard.gameBoardArr[8] === currentMarker
+    ) {
+      return true;
+    }
+    if (
+      gameBoard.gameBoardArr[0] === currentMarker
+      && gameBoard.gameBoardArr[4] === currentMarker
+      && gameBoard.gameBoardArr[8] === currentMarker
+    ) {
+      return true;
+    }
+    if (
+      gameBoard.gameBoardArr[2] === currentMarker
+      && gameBoard.gameBoardArr[4] === currentMarker
+      && gameBoard.gameBoardArr[6] === currentMarker
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  const checkTie = () => !gameBoard.gameBoardArr.includes('');
+
+  const checkFinish = () => {
+    if (checkWin() === true || checkTie() === true) {
+      displayController.finishGame();
+    }
+  };
+  return { checkWin, checkTie, checkFinish };
+})();
 
 displayController.renderBoard();
